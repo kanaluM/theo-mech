@@ -20,14 +20,24 @@ const y_initial = 0;
 const g = 2;
 const m = 1;
 
-const min_y = parseInt(document.getElementById("y-slider").min);
-const max_y = parseInt(document.getElementById("y-slider").max);
-var y1 = parseInt(document.getElementById("y-slider").value);
+const min_y = parseInt(document.getElementById("y1-slider").min);
+const max_y = parseInt(document.getElementById("y1-slider").max);
+
+var y1 = parseInt(document.getElementById("y1-slider").value);
+var y2 = parseInt(document.getElementById("y2-slider").value);
+var y3 = parseInt(document.getElementById("y3-slider").value);
+var y4 = parseInt(document.getElementById("y4-slider").value);
+var y5 = parseInt(document.getElementById("y5-slider").value);
+
+const t1 = 3;
+const t2 = 6;
+const t3 = 10;
+const t4 = 14;
+const t5 = 17;
 
 const y0 = 0;
 const yf = 0;
 const t0 = 0;
-const t1 = 10;
 const tf = 20;
 
 /////////////////////////////////////////////////
@@ -35,10 +45,10 @@ const tf = 20;
 /////////////////////////////////////////////////
 
 // wrapper function to start animations
-function startAnimation(t, y) {
+function startAnimation() {
     // 1D projectiles
-    param1D = new component(10, 10, "orange", CANVAS_WIDTH/3, transformYCoord(y_initial), 1, t, y);
-    actual1D = new component(10, 10, "purple", 2*CANVAS_WIDTH/3, transformYCoord(y_initial), 2, t, y);
+    param1D = new component(10, 10, "orange", CANVAS_WIDTH/3, transformYCoord(y_initial), 1);
+    actual1D = new component(10, 10, "purple", 2 * CANVAS_WIDTH/3, transformYCoord(y_initial), 2);
     animArea.start();
 }
 
@@ -85,15 +95,13 @@ var animArea = {
 }
 
 // to create projectiles
-function component(width, height, color, x, y, type, t1, y1) {
+function component(width, height, color, x, y, type) {
     this.type = type;
     this.width = width;
     this.height = height;
     this.color = color;
     this.x = x;
     this.y = y;
-    this.t1 = t1;
-    this.y1 = y1;
 
     this.update = function(){
         animArea.context.fillStyle = this.color;
@@ -101,10 +109,58 @@ function component(width, height, color, x, y, type, t1, y1) {
     }
 
     this.newPos = function(t) {
+        var prevY, currY, prevT, currT;
         if (this.type == 1) {   // param 1D
-            if (t < t1) {this.y = y0 + ((this.y1 - y0 + 0.5 * g * (this.t1-t0) ** 2) / (this.t1 - t0)) * (t - t0) - 0.5 * g * (t - t0) ** 2;}
-            else if (t > t1) {this.y = this.y1 + ((yf - this.y1 + 0.5 * g * (tf-this.t1) ** 2) / (tf - this.t1)) * (t - this.t1) - 0.5 * g * (t - this.t1) ** 2;}
-            else {this.y = this.y1;}
+            if (t < t1) {
+              prevY = y0;
+              currY = y1
+              prevT = t0;
+              currT = t1;
+            } else if (t == t1) {
+              this.y = y1;
+              return; 
+            } else if (t < t2) {
+              prevY = y1;
+              currY = y2;
+              prevT = t1;
+              currT = t2;
+            } else if (t == t2) {
+              this.y = y2;
+              return;
+            } else if (t < t3) {
+              prevY = y2;
+              currY = y3;
+              prevT = t2;
+              currT = t3;
+            } else if (t == t3) {
+              this.y = y3;
+              return;
+            } else if (t < t4) {
+              prevY = y3;
+              currY = y4;
+              prevT = t3;
+              currT = t4;
+            } else if (t == t4) {
+              this.y = y4;
+              return;
+            } else if (t < t5) {
+              prevY = y4;
+              currY = y5;
+              prevT = t4;
+              currT = t5;
+            } else if (t == t5) {
+              this.y = y5;
+              return;
+            } else if (t < tf) {
+              prevY = y5;
+              currY = yf;
+              prevT = t5;
+              currT = tf;
+            } else if (t >= tf) {
+              this.y = yf;
+              return;
+            }
+            this.y = prevY + ((currY - prevY + 0.5 * g * (currT - prevT) ** 2) / (currT - prevT)) * (t - prevT) - 0.5 * g * (t - prevT) ** 2;
         } else if (this.type == 2) {   // actual 1D
             // y = v0 t - t**2     v0 = Math.sqrt(2*g*this.y)
             this.y = t * (20 - t);
@@ -233,9 +289,25 @@ const position_plot = createPlot(position_input);
 var x_actual_line = position_plot.svg.append("g").attr("id", "x-actual-line");
 var x_parameterized_line = position_plot.svg.append("g").attr("id", "x-parameterized-line");
 
-y_point = position_plot.svg.append("circle")
+y1_point = position_plot.svg.append("circle")
 .attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
 .attr("cx", position_plot.xScale(t1)).attr("cy", position_plot.yScale(y1));
+
+y2_point = position_plot.svg.append("circle")
+.attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
+.attr("cx", position_plot.xScale(t2)).attr("cy", position_plot.yScale(y2));
+
+y3_point = position_plot.svg.append("circle")
+.attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
+.attr("cx", position_plot.xScale(t3)).attr("cy", position_plot.yScale(y3));
+
+y4_point = position_plot.svg.append("circle")
+.attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
+.attr("cx", position_plot.xScale(t4)).attr("cy", position_plot.yScale(y4));
+
+y5_point = position_plot.svg.append("circle")
+.attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
+.attr("cx", position_plot.xScale(t5)).attr("cy", position_plot.yScale(y5));
 
 // update position plot
 function plotPosition(actual, parameterized) {
@@ -335,20 +407,65 @@ plotIntegralPoints(y1);
 /* EVENT LISTENERS */
 /////////////////////////////////////////////////
 
-document.getElementById("y-slider").oninput = function() {
-    y1 = parseInt(document.getElementById("y-slider").value);
-    document.getElementById("print-y").innerHTML = y1;
-    y_point.attr("cy", position_plot.yScale(y1));
-    plotIntegralPoints(y1);
+function updateSliderInfo(x) {
+    yx = parseInt(document.getElementById(`y${x}-slider`).value);
+    document.getElementById(`print-y${x}`).innerHTML = yx;
+    if (x == 1) {y1 = yx; y1_point.attr("cy", position_plot.yScale(yx));}
+    else if (x == 2) {y2 = yx; y2_point.attr("cy", position_plot.yScale(yx));}
+    else if (x == 3) {y3 = yx; y3_point.attr("cy", position_plot.yScale(yx));}
+    else if (x == 4) {y4 = yx; y4_point.attr("cy", position_plot.yScale(yx));}
+    else if (x == 5) {y5 = yx; y5_point.attr("cy", position_plot.yScale(yx));}
 }
 
-document.getElementById("y-slider").onchange = function() {
-    y1 = parseInt(document.getElementById("y-slider").value);
-    document.getElementById("print-y").innerHTML = y1;
-    y_point.attr("cy", position_plot.yScale(y1));
-    plotIntegralPoints(y1);
+
+document.getElementById("y1-slider").oninput = function() {
+    updateSliderInfo(1);
+}
+
+document.getElementById("y1-slider").onchange = function() {
+    updateSliderInfo(1);
     endAnimation();
-    startAnimation(t1, y1);
+    startAnimation();
+}
+
+document.getElementById("y2-slider").oninput = function() {
+  updateSliderInfo(2);
+}
+
+document.getElementById("y2-slider").onchange = function() {
+  updateSliderInfo(2);
+  endAnimation();
+  startAnimation();
+}
+
+document.getElementById("y3-slider").oninput = function() {
+  updateSliderInfo(3);
+}
+
+document.getElementById("y3-slider").onchange = function() {
+  updateSliderInfo(3);
+  endAnimation();
+  startAnimation();
+}
+
+document.getElementById("y4-slider").oninput = function() {
+  updateSliderInfo(4);
+}
+
+document.getElementById("y4-slider").onchange = function() {
+  updateSliderInfo(4);
+  endAnimation();
+  startAnimation();
+}
+
+document.getElementById("y5-slider").oninput = function() {
+  updateSliderInfo(5);
+}
+
+document.getElementById("y5-slider").onchange = function() {
+  updateSliderInfo(5);
+  endAnimation();
+  startAnimation();
 }
 
 

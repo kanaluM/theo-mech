@@ -28,16 +28,17 @@ Using \(m=1\) and \(g=2\)
 \[L=KE-PE\]
 \[L=\frac{1}{2}mv^2-mgy\]
 \[S_{1}=\frac{1}{2}m\int_0^{10}\left(\frac{y_1-y_i+\frac{1}{2}g(t_1-t_i)^2}{t_1-t_i}-g(t-t_i)\right)^2 dt-mg\int_0^{10}\left(y_i+\left[\frac{y_1-y_i+\frac{1}{2}g(t_1-t_i)^2}{t_1-t_i}\right](t-t_i)-\frac{1}{2}g(t-t_i)^2\right)dt\]
-\[S_{1}=\frac{1}{2}\int_0^{10}\left(\frac{y_1+100}{10}-2t\right)^2 dt-2\int_0^{10}\left(\left[\frac{y_1+100}{10}\right]t-t^2\right)dt\]
-\[S_{1}=-\frac{1}{12}\left(\frac{y_1+100}{10}-2t\right)^3\Bigg|_0^{10}-2\left(\left[\frac{y_1+100}{10}\right]\frac{t^2}{2}-\frac{t^3}{3}\right)\Bigg|_0^{10}\]
-\[S_{1}=-\frac{1}{12}\left(\left(\frac{y_1+100}{10}-20\right)^3 - \left(\frac{y_1+100}{10}\right)^3\right)
--2\left(\left[\frac{y_1+100}{10}\right]\frac{100}{2}-\frac{1000}{3}\right)\]
+\[S_{1}=-\frac{m}{6g}\left(\frac{y_1-y_i+\frac{1}{2}g(t_1-t_i)^2}{t_1-t_i}-g(t-t_i)\right)^3 \Bigg|_{0}^{10} - mg\left(y_i t +\left[\frac{y_1-y_i+\frac{1}{2}g(t_1-t_i)^2}{t_1-t_i}\right]\frac{(t-t_i)^2}{2}-\frac{g}{2}\frac{(t-t_i)^3}{3}\right)\Bigg|_{0}^{10}\]
+<!-- \[S_{1}=\frac{1}{2}\int_0^{10}\left(\frac{y_1+100}{10}-2t\right)^2 dt-2\int_0^{10}\left(\left[\frac{y_1+100}{10}\right]t-t^2\right)dt\] -->
+<!-- \[S_{1}=-\frac{1}{12}\left(\frac{y_1+100}{10}-2t\right)^3\Bigg|_0^{10}-2\left(\left[\frac{y_1+100}{10}\right]\frac{t^2}{2}-\frac{t^3}{3}\right)\Bigg|_0^{10}\] -->
+<!-- \[S_{1}=-\frac{1}{12}\left(\left(\frac{y_1+100}{10}-20\right)^3 - \left(\frac{y_1+100}{10}\right)^3\right)-2\left(\left[\frac{y_1+100}{10}\right]\frac{100}{2}-\frac{1000}{3}\right)\] -->
 
 and
-\[S_{2}=\frac{1}{2}\int_{10}^{20}\left(\frac{y_f-y_1+\frac{1}{2}g(t_f-t_1)^2}{t_f-t_1}-g(t-t_1)\right)^2 dt-2\int_{10}^{20}\left(y_1+\left[\frac{y_f-y_1+\frac{1}{2}g(t_f-t_1)^2}{t_f-t_1}\right](t-t_1)-\frac{1}{2}g(t-t_1)^2\right)dt\]
-\[S_{2}=\frac{1}{2}\int_{10}^{20}\left(\frac{100-y_1}{100}-2(t-10)\right)^2 dt-2\int_{10}^{20}\left(y_1+\left[\frac{100-y_1}{10}\right](t-10)-(t-10)^2\right)dt\]
-\[S_{2}=-\frac{1}{12}\left(\frac{100-y_1}{100}-2(t-10)\right)^3\Bigg|_{10}^{20}-2\left(y_1t+\left[\frac{100-y_1}{10}\right]\frac{(t-10)^2}{2}-\frac{(t-10)^3}{3}\right)\Bigg|_{10}^{20}\]
-\[S_{2}=-\frac{1}{12}\left(\left(\frac{100-y_1}{100}-20\right)^3 - \left(\frac{100-y_1}{100}\right)^3\right)-2\left(\left(20y_1+\left[\frac{100-y_1}{10}\right]\frac{100}{2}-\frac{1000}{3}\right) - \left(10y_1\right)\right)\]
+\[S_{2}=\frac{1}{2}m\int_{10}^{20}\left(\frac{y_f-y_1+\frac{1}{2}g(t_f-t_1)^2}{t_f-t_1}-g(t-t_1)\right)^2 dt-mg\int_{10}^{20}\left(y_1+\left[\frac{y_f-y_1+\frac{1}{2}g(t_f-t_1)^2}{t_f-t_1}\right](t-t_1)-\frac{1}{2}g(t-t_1)^2\right)dt\]
+\[S_{2}=-\frac{1}{6g}m\left(\frac{y_f-y_1+\frac{1}{2}g(t_f-t_1)^2}{t_f-t_1}-g(t-t_1)\right)^3 \Bigg|_{10}^{20} - mg\left(y_1t+\left[\frac{y_f-y_1+\frac{1}{2}g(t_f-t_1)^2}{t_f-t_1}\right]\frac{(t-t_1)^2}{2}-\frac{g}{2}\frac{(t-t_1)^3}{3}\right)\Bigg|_{10}^{20}\]
+<!-- \[S_{2}=\frac{1}{2}\int_{10}^{20}\left(\frac{100-y_1}{100}-2(t-10)\right)^2 dt-2\int_{10}^{20}\left(y_1+\left[\frac{100-y_1}{10}\right](t-10)-(t-10)^2\right)dt\] -->
+<!-- \[S_{2}=-\frac{1}{12}\left(\frac{100-y_1}{100}-2(t-10)\right)^3\Bigg|_{10}^{20}-2\left(y_1t+\left[\frac{100-y_1}{10}\right]\frac{(t-10)^2}{2}-\frac{(t-10)^3}{3}\right)\Bigg|_{10}^{20}\] -->
+<!-- \[S_{2}=-\frac{1}{12}\left(\left(\frac{100-y_1}{100}-20\right)^3 - \left(\frac{100-y_1}{100}\right)^3\right)-2\left(\left(20y_1+\left[\frac{100-y_1}{10}\right]\frac{100}{2}-\frac{1000}{3}\right) - \left(10y_1\right)\right)\] -->
 </p>
 
 <br>
@@ -56,8 +57,16 @@ and
 
         <div class="column">
             <div id="controls">
-                <label for="y-slider">y: <span id="print-y">100</span></label>
-                <input id="y-slider" class="slider" type="range" min="0" max="200" value="100">
+                <label for="y1-slider">y1: <span id="print-y1">45</span></label>
+                <input id="y1-slider" class="slider" type="range" min="0" max="200" value="45">
+                <label for="y2-slider">y2: <span id="print-y2">80</span></label>
+                <input id="y2-slider" class="slider" type="range" min="0" max="200" value="80">
+                <label for="y3-slider">y3: <span id="print-y3">100</span></label>
+                <input id="y3-slider" class="slider" type="range" min="0" max="200" value="100">
+                <label for="y4-slider">y4: <span id="print-y4">80</span></label>
+                <input id="y4-slider" class="slider" type="range" min="0" max="200" value="80">
+                <label for="y5-slider">y5: <span id="print-y5">45</span></label>
+                <input id="y5-slider" class="slider" type="range" min="0" max="200" value="45">
             </div>
         </div>
     </div>  
