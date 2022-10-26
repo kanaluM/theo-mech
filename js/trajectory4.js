@@ -23,22 +23,32 @@ const m = 1;
 const min_y = parseInt(document.getElementById("y1-slider").min);
 const max_y = parseInt(document.getElementById("y1-slider").max);
 
-var y1 = parseInt(document.getElementById("y1-slider").value);
-var y2 = parseInt(document.getElementById("y2-slider").value);
-var y3 = parseInt(document.getElementById("y3-slider").value);
-var y4 = parseInt(document.getElementById("y4-slider").value);
-var y5 = parseInt(document.getElementById("y5-slider").value);
+var yList = [0, 
+              parseInt(document.getElementById("y1-slider").value), 
+              parseInt(document.getElementById("y2-slider").value), 
+              parseInt(document.getElementById("y3-slider").value), 
+              parseInt(document.getElementById("y4-slider").value),  
+              parseInt(document.getElementById("y5-slider").value), 
+              0];
 
-const t1 = 3;
-const t2 = 6;
-const t3 = 10;
-const t4 = 14;
-const t5 = 17;
+// var y1 = parseInt(document.getElementById("y1-slider").value);
+// var y2 = parseInt(document.getElementById("y2-slider").value);
+// var y3 = parseInt(document.getElementById("y3-slider").value);
+// var y4 = parseInt(document.getElementById("y4-slider").value);
+// var y5 = parseInt(document.getElementById("y5-slider").value);
 
-const y0 = 0;
-const yf = 0;
-const t0 = 0;
-const tf = 20;
+const tList = [0, 3, 6, 10, 14, 17, 20];
+
+// const t1 = 3;
+// const t2 = 6;
+// const t3 = 10;
+// const t4 = 14;
+// const t5 = 17;
+
+// const y0 = 0;
+// const yf = 0;
+// const t0 = 0;
+// const tf = 20;
 
 /////////////////////////////////////////////////
 /* CANVAS ANIMATIONS */
@@ -109,58 +119,94 @@ function component(width, height, color, x, y, type) {
     }
 
     this.newPos = function(t) {
-        var prevY, currY, prevT, currT;
+        // var prevY, currY, prevT, currT;
         if (this.type == 1) {   // param 1D
-            if (t < t1) {
-              prevY = y0;
-              currY = y1
-              prevT = t0;
-              currT = t1;
-            } else if (t == t1) {
-              this.y = y1;
+            var i;
+            if (t < tList[1]) {
+              i = 1;
+            } else if (t == tList[1]) {
+              this.y = yList[1];
               return; 
-            } else if (t < t2) {
-              prevY = y1;
-              currY = y2;
-              prevT = t1;
-              currT = t2;
-            } else if (t == t2) {
-              this.y = y2;
+            } else if (t < tList[2]) {
+              i = 2;
+            } else if (t == tList[2]) {
+              this.y = yList[2];
               return;
-            } else if (t < t3) {
-              prevY = y2;
-              currY = y3;
-              prevT = t2;
-              currT = t3;
-            } else if (t == t3) {
-              this.y = y3;
+            } else if (t < tList[3]) {
+              i = 3;
+            } else if (t == tList[3]) {
+              this.y = yList[3];
               return;
-            } else if (t < t4) {
-              prevY = y3;
-              currY = y4;
-              prevT = t3;
-              currT = t4;
-            } else if (t == t4) {
-              this.y = y4;
+            } else if (t < tList[4]) {
+              i = 4;
+            } else if (t == tList[4]) {
+              this.y = yList[4];
               return;
-            } else if (t < t5) {
-              prevY = y4;
-              currY = y5;
-              prevT = t4;
-              currT = t5;
-            } else if (t == t5) {
-              this.y = y5;
+            } else if (t < tList[5]) {
+              i = 5;
+            } else if (t == tList[5]) {
+              this.y = yList[5];
               return;
-            } else if (t < tf) {
-              prevY = y5;
-              currY = yf;
-              prevT = t5;
-              currT = tf;
-            } else if (t >= tf) {
-              this.y = yf;
+            } else if (t < tList[6]) {
+              i = 6;
+            } else if (t >= tList[6]) {
+              this.y = yList[6];
               return;
             }
-            this.y = prevY + ((currY - prevY + 0.5 * g * (currT - prevT) ** 2) / (currT - prevT)) * (t - prevT) - 0.5 * g * (t - prevT) ** 2;
+
+            this.y = yList[i-1] + ((yList[i] - yList[i-1] + 0.5 * g * (tList[i] - tList[i-1]) ** 2) / (tList[i] - tList[i-1])) * (t - tList[i-1]) - 0.5 * g * (t - tList[i-1]) ** 2;
+
+            // if (t < t1) {
+            //   prevY = y0;
+            //   currY = y1
+            //   prevT = t0;
+            //   currT = t1;
+            // } else if (t == t1) {
+            //   this.y = y1;
+            //   return; 
+            // } else if (t < t2) {
+            //   prevY = y1;
+            //   currY = y2;
+            //   prevT = t1;
+            //   currT = t2;
+            // } else if (t == t2) {
+            //   this.y = y2;
+            //   return;
+            // } else if (t < t3) {
+            //   prevY = y2;
+            //   currY = y3;
+            //   prevT = t2;
+            //   currT = t3;
+            // } else if (t == t3) {
+            //   this.y = y3;
+            //   return;
+            // } else if (t < t4) {
+            //   prevY = y3;
+            //   currY = y4;
+            //   prevT = t3;
+            //   currT = t4;
+            // } else if (t == t4) {
+            //   this.y = y4;
+            //   return;
+            // } else if (t < t5) {
+            //   prevY = y4;
+            //   currY = y5;
+            //   prevT = t4;
+            //   currT = t5;
+            // } else if (t == t5) {
+            //   this.y = y5;
+            //   return;
+            // } else if (t < tf) {
+            //   prevY = y5;
+            //   currY = yf;
+            //   prevT = t5;
+            //   currT = tf;
+            // } else if (t >= tf) {
+            //   this.y = yf;
+            //   return;
+            // }
+            // this.y = prevY + ((currY - prevY + 0.5 * g * (currT - prevT) ** 2) / (currT - prevT)) * (t - prevT) - 0.5 * g * (t - prevT) ** 2;
+
         } else if (this.type == 2) {   // actual 1D
             // y = v0 t - t**2     v0 = Math.sqrt(2*g*this.y)
             this.y = t * (20 - t);
@@ -195,7 +241,7 @@ function updateFrame() {
     animArea.context.fillText("Projectile Motion", 10, 30);
 
     // end animation when t = 20
-    if (animArea.time >= tf) {endAnimation();}
+    if (animArea.time >= tList[6]) {endAnimation();}
 }
 
 
@@ -281,7 +327,7 @@ function createPlot(input) {
 const position_input = {
   divID: "#position-graph",
   svgID: "svg-for-position-plots",
-  domain: {lower: 0, upper: tf},
+  domain: {lower: 0, upper: tList[tList.length - 1]},
   xLabel: "Time",
   range: {lower: 0, upper: 200},
   yLabel: "Displacement"};
@@ -291,23 +337,23 @@ var x_parameterized_line = position_plot.svg.append("g").attr("id", "x-parameter
 
 y1_point = position_plot.svg.append("circle")
 .attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
-.attr("cx", position_plot.xScale(t1)).attr("cy", position_plot.yScale(y1));
+.attr("cx", position_plot.xScale(tList[1])).attr("cy", position_plot.yScale(yList[1]));
 
 y2_point = position_plot.svg.append("circle")
 .attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
-.attr("cx", position_plot.xScale(t2)).attr("cy", position_plot.yScale(y2));
+.attr("cx", position_plot.xScale(tList[2])).attr("cy", position_plot.yScale(yList[2]));
 
 y3_point = position_plot.svg.append("circle")
 .attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
-.attr("cx", position_plot.xScale(t3)).attr("cy", position_plot.yScale(y3));
+.attr("cx", position_plot.xScale(tList[3])).attr("cy", position_plot.yScale(yList[3]));
 
 y4_point = position_plot.svg.append("circle")
 .attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
-.attr("cx", position_plot.xScale(t4)).attr("cy", position_plot.yScale(y4));
+.attr("cx", position_plot.xScale(tList[4])).attr("cy", position_plot.yScale(yList[4]));
 
 y5_point = position_plot.svg.append("circle")
 .attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
-.attr("cx", position_plot.xScale(t5)).attr("cy", position_plot.yScale(y5));
+.attr("cx", position_plot.xScale(tList[5])).attr("cy", position_plot.yScale(yList[5]));
 
 // update position plot
 function plotPosition(actual, parameterized) {
@@ -338,12 +384,17 @@ function plotPosition(actual, parameterized) {
 }
 
 // calculate action
-function action(y) {
-  c = (y + 100) / 10;
-  d = (100 - y) / 10;
-  s1 = -((c-20)**3 - c**3)/12 - 2*(c*50-(1000/3));
-  s2 = -((d-20)**3 - d**3)/12 - 2*(10*y + 50*d - (1000/3));
-  return s1 + s2;
+function action() {
+  var ki = 0;
+  var pi = 0;
+  for (let i=1; i < yList.length; i++) {
+    let kConst = (yList[i]-yList[i-1]+0.5*g*(tList[i]-tList[i-1])**2)/(tList[i]-tList[i-1]);
+    ki += (kConst - g*(tList[i]-tList[i-1]))**3 - kConst**3;
+
+    let pConst = (yList[i]-yList[i-1]+0.5*g*(tList[i]-tList[i-1])**2)/(tList[i]-tList[i-1]);
+    pi += yList[i-1]*tList[i] + pConst*(tList[i]-tList[i-1])**2-g*(tList[i]-tList[i-1])**3/6 - yList[i-1]*tList[i-1];
+  }
+  return -m*ki/(6*g) - m*g*pi;
 }
 
 // generate all integral data
@@ -356,7 +407,7 @@ function integralData() {
 }
 
 // CALCULATE ALL DATA ON LOAD
-const integral_data = integralData();
+// const integral_data = integralData();
 
 // INTEGRAL OF ENERGY
 const integral_input = {
@@ -399,8 +450,8 @@ function plotIntegralPoints(cy) {
 }
 
 // PLOT ON LOAD
-plotIntegral();
-plotIntegralPoints(y1);
+// plotIntegral();
+// plotIntegralPoints(y1);
 
 
 /////////////////////////////////////////////////
@@ -408,13 +459,14 @@ plotIntegralPoints(y1);
 /////////////////////////////////////////////////
 
 function updateSliderInfo(x) {
-    yx = parseInt(document.getElementById(`y${x}-slider`).value);
-    document.getElementById(`print-y${x}`).innerHTML = yx;
-    if (x == 1) {y1 = yx; y1_point.attr("cy", position_plot.yScale(yx));}
-    else if (x == 2) {y2 = yx; y2_point.attr("cy", position_plot.yScale(yx));}
-    else if (x == 3) {y3 = yx; y3_point.attr("cy", position_plot.yScale(yx));}
-    else if (x == 4) {y4 = yx; y4_point.attr("cy", position_plot.yScale(yx));}
-    else if (x == 5) {y5 = yx; y5_point.attr("cy", position_plot.yScale(yx));}
+    yList[x] = parseInt(document.getElementById(`y${x}-slider`).value);
+    document.getElementById(`print-y${x}`).innerHTML = yList[x];
+    if (x == 1) {y1_point.attr("cy", position_plot.yScale(yList[x]));}
+    else if (x == 2) {y2_point.attr("cy", position_plot.yScale(yList[x]));}
+    else if (x == 3) {y3_point.attr("cy", position_plot.yScale(yList[x]));}
+    else if (x == 4) {y4_point.attr("cy", position_plot.yScale(yList[x]));}
+    else if (x == 5) {y5_point.attr("cy", position_plot.yScale(yList[x]));}
+    document.getElementById("debug").innerHTML = parseInt(action());
 }
 
 
