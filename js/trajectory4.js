@@ -14,8 +14,7 @@ const TRANSITION_TIME = 10; // ms
 const FRAME_RATE = 1; // ms
 const dt = 0.01;
 
-const x_initial = 0;
-const y_initial = 0;
+const y0 = 0;
 
 const g = 2;
 const m = 1;
@@ -31,24 +30,8 @@ var yList = [0,
               parseInt(document.getElementById("y5-slider").value), 
               0];
 
-// var y1 = parseInt(document.getElementById("y1-slider").value);
-// var y2 = parseInt(document.getElementById("y2-slider").value);
-// var y3 = parseInt(document.getElementById("y3-slider").value);
-// var y4 = parseInt(document.getElementById("y4-slider").value);
-// var y5 = parseInt(document.getElementById("y5-slider").value);
-
 const tList = [0, 3, 6, 10, 14, 17, 20];
 
-// const t1 = 3;
-// const t2 = 6;
-// const t3 = 10;
-// const t4 = 14;
-// const t5 = 17;
-
-// const y0 = 0;
-// const yf = 0;
-// const t0 = 0;
-// const tf = 20;
 
 /////////////////////////////////////////////////
 /* CANVAS ANIMATIONS */
@@ -57,8 +40,8 @@ const tList = [0, 3, 6, 10, 14, 17, 20];
 // wrapper function to start animations
 function startAnimation() {
     // 1D projectiles
-    param1D = new component(10, 10, "orange", CANVAS_WIDTH/3, transformYCoord(y_initial), 1);
-    actual1D = new component(10, 10, "purple", 2 * CANVAS_WIDTH/3, transformYCoord(y_initial), 2);
+    param1D = new component(10, 10, "orange", CANVAS_WIDTH/3, transformYCoord(y0), 1);
+    actual1D = new component(10, 10, "purple", 2 * CANVAS_WIDTH/3, transformYCoord(y0), 2);
     animArea.start();
 }
 
@@ -384,7 +367,7 @@ function plotPosition(actual, parameterized) {
 }
 
 // calculate action
-function action() {
+function action(yList) {
   var ki = 0;
   var pi = 0;
   for (let i=1; i < yList.length; i++) {
@@ -397,17 +380,18 @@ function action() {
   return -m*ki/(6*g) - m*g*pi;
 }
 
-// generate all integral data
-function integralData() {
+// integral data
+function integralData(idx) {
   var s_data = [];
+  const initialY = yList[idx];
   for (let cy = min_y; cy <= max_y; cy++) {
-      s_data.push({x: cy, y: action(cy)});
+      yList[idx] = cy;
+      s_data.push({x: cy, y: action(yList)});
   }
-  return {s: s_data};
+  yList[idx] = initialY;
+  return s_data;
 }
 
-// CALCULATE ALL DATA ON LOAD
-// const integral_data = integralData();
 
 // INTEGRAL OF ENERGY
 const integral_input = {
@@ -415,19 +399,19 @@ const integral_input = {
   svgID: "svg-for-integral-plots",
   domain: {lower: min_y, upper: max_y},
   xLabel: "y coord",
-  range: {lower: -2000, upper: 0},
+  range: {lower: -2000, upper: 2000},
   yLabel: "Integral of Energy (dt)"};
 const integral_plot = createPlot(integral_input);
 var si_line = integral_plot.svg.append("g").attr("id", "action-line");
 var si_point = integral_plot.svg.append("circle")
 .attr("id", "action-point").attr("r", 3).attr("fill", "blue");
 
-// integral plots initialized only on load
-function plotIntegral() {
+// integral plot + point
+function plotIntegral(data) {
 
   // prepare input
   var input = {
-      data: integral_data.s,
+      data: data,
       svg: integral_plot.svg,
       line: si_line,
       xScale: integral_plot.xScale,
@@ -438,27 +422,37 @@ function plotIntegral() {
   plotData(input);
 }
 
-// updates integral points
-function plotIntegralPoints(cy) {
-
+function plotIntegralPoint(idx) {
   // x-axis is control point cy
-  si_point.attr("cx", integral_plot.xScale(cy));
+  si_point.attr("cx", integral_plot.xScale(yList[idx]));
 
   // y-axis is integral energy
-  let si = integral_data["s"][cy].y;
+  let si = action(yList);
   si_point.attr("cy", integral_plot.yScale(si));
 }
 
-// PLOT ON LOAD
-// plotIntegral();
-// plotIntegralPoints(y1);
+const data = integralData(1);
+plotIntegral(data);
+plotIntegralPoint(1);
 
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
 /////////////////////////////////////////////////
 
+
+document.getElementById("reset-button").onclick = function() {
+    const vals = [0, 51, 84, 100, 84, 51];
+    for (let i = 1; i <= 5; i++) {
+      document.getElementById(`y${i}-slider`).value = vals[i];
+      updateSliderInfo(i);
+    }
+    endAnimation();
+    startAnimation();
+}
+
 function updateSliderInfo(x) {
+    endAnimation();
     yList[x] = parseInt(document.getElementById(`y${x}-slider`).value);
     document.getElementById(`print-y${x}`).innerHTML = yList[x];
     if (x == 1) {y1_point.attr("cy", position_plot.yScale(yList[x]));}
@@ -466,9 +460,9 @@ function updateSliderInfo(x) {
     else if (x == 3) {y3_point.attr("cy", position_plot.yScale(yList[x]));}
     else if (x == 4) {y4_point.attr("cy", position_plot.yScale(yList[x]));}
     else if (x == 5) {y5_point.attr("cy", position_plot.yScale(yList[x]));}
-    document.getElementById("debug").innerHTML = parseInt(action());
+    document.getElementById("debug").innerHTML = parseInt(action(yList));
+    plotIntegralPoint(x);
 }
-
 
 document.getElementById("y1-slider").oninput = function() {
     updateSliderInfo(1);
