@@ -11,7 +11,7 @@ const SVG_WIDTH = 360;
 const SVG_HEIGHT = 360;
 
 const TRANSITION_TIME = 10; // ms
-const FRAME_RATE = 1; // ms
+const FRAME_RATE = 0.1; // ms
 const dt = 0.01;
 
 const y0 = 0;
@@ -42,6 +42,7 @@ function startAnimation() {
     // 1D projectiles
     param1D = new component(10, 10, "orange", CANVAS_WIDTH/3, transformYCoord(y0), 1);
     actual1D = new component(10, 10, "purple", 2 * CANVAS_WIDTH/3, transformYCoord(y0), 2);
+    document.getElementById("print-action").innerHTML = Math.floor(action(yList));
     animArea.start();
 }
 
@@ -84,7 +85,7 @@ var animArea = {
         this.parameterized_data = [];
         this.actual_data = [];
         clearInterval(this.interval); 
-    }
+      }
 }
 
 // to create projectiles
@@ -96,10 +97,10 @@ function component(width, height, color, x, y, type) {
     this.x = x;
     this.y = y;
 
-    this.update = function(){
-        animArea.context.fillStyle = this.color;
-        animArea.context.fillRect(this.x, transformYCoord(this.y), this.width, this.height);
-    }
+    // this.update = function(){
+    //     animArea.context.fillStyle = this.color;
+    //     animArea.context.fillRect(this.x, transformYCoord(this.y), this.width, this.height);
+    // }
 
     this.newPos = function(t) {
         // var prevY, currY, prevT, currT;
@@ -227,6 +228,8 @@ function updateFrame() {
     if (animArea.time >= tList[6]) {endAnimation();}
 }
 
+// run on load
+startAnimation();
 
 /////////////////////////////////////////////////
 /* MASTER GRAPHING CAPABILITY */
@@ -315,27 +318,27 @@ const position_input = {
   range: {lower: 0, upper: 200},
   yLabel: "Displacement"};
 const position_plot = createPlot(position_input);
-var x_actual_line = position_plot.svg.append("g").attr("id", "x-actual-line");
-var x_parameterized_line = position_plot.svg.append("g").attr("id", "x-parameterized-line");
+var x_actual_line = position_plot.svg.append("g").attr("id", "x-actual-line").attr("stroke", "black");
+var x_parameterized_line = position_plot.svg.append("g").attr("id", "x-parameterized-line").attr("stroke", "white");
 
 y1_point = position_plot.svg.append("circle")
 .attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
 .attr("cx", position_plot.xScale(tList[1])).attr("cy", position_plot.yScale(yList[1]));
 
 y2_point = position_plot.svg.append("circle")
-.attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
+.attr("id", "fixed-point").attr("r", 3).attr("fill", "orange")
 .attr("cx", position_plot.xScale(tList[2])).attr("cy", position_plot.yScale(yList[2]));
 
 y3_point = position_plot.svg.append("circle")
-.attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
+.attr("id", "fixed-point").attr("r", 3).attr("fill", "green")
 .attr("cx", position_plot.xScale(tList[3])).attr("cy", position_plot.yScale(yList[3]));
 
 y4_point = position_plot.svg.append("circle")
-.attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
+.attr("id", "fixed-point").attr("r", 3).attr("fill", "blue")
 .attr("cx", position_plot.xScale(tList[4])).attr("cy", position_plot.yScale(yList[4]));
 
 y5_point = position_plot.svg.append("circle")
-.attr("id", "fixed-point").attr("r", 3).attr("fill", "red")
+.attr("id", "fixed-point").attr("r", 3).attr("fill", "purple")
 .attr("cx", position_plot.xScale(tList[5])).attr("cy", position_plot.yScale(yList[5]));
 
 // update position plot
@@ -347,8 +350,7 @@ function plotPosition(actual, parameterized) {
       svg: position_plot.svg,
       line: x_actual_line,
       xScale: position_plot.xScale,
-      yScale: position_plot.yScale,
-      color: "blue"};
+      yScale: position_plot.yScale};
   
     // plot the data
     plotData(input);
@@ -359,8 +361,7 @@ function plotPosition(actual, parameterized) {
       svg: position_plot.svg,
       line: x_parameterized_line,
       xScale: position_plot.xScale,
-      yScale: position_plot.yScale,
-      color: "red"};
+      yScale: position_plot.yScale};
   
     // plot the data
     plotData(input);
@@ -375,7 +376,7 @@ function action(yList) {
     ki += (kConst - g*(tList[i]-tList[i-1]))**3 - kConst**3;
 
     let pConst = (yList[i]-yList[i-1]+0.5*g*(tList[i]-tList[i-1])**2)/(tList[i]-tList[i-1]);
-    pi += yList[i-1]*tList[i] + pConst*(tList[i]-tList[i-1])**2-g*(tList[i]-tList[i-1])**3/6 - yList[i-1]*tList[i-1];
+    pi += yList[i-1]*tList[i] + pConst*(tList[i]-tList[i-1])**2/2-g*(tList[i]-tList[i-1])**3/6 - yList[i-1]*tList[i-1];
   }
   return -m*ki/(6*g) - m*g*pi;
 }
@@ -392,7 +393,6 @@ function integralData(idx) {
   return s_data;
 }
 
-
 // INTEGRAL OF ENERGY
 const integral_input = {
   divID: "#integral-graph",
@@ -406,19 +406,19 @@ const integral_plot = createPlot(integral_input);
 const colors = ["red", "orange", "green", "blue", "purple"];
 
 var si_line_1 = integral_plot.svg.append("g").attr("id", "action-line-1").attr("stroke", colors[0]).attr("visibility", "visible");
-var si_point_1 = integral_plot.svg.append("circle").attr("id", "action-point-1").attr("r", 3).attr("fill", colors[0]);
+var si_point_1 = integral_plot.svg.append("circle").attr("id", "action-point-1").attr("r", 3).attr("fill", colors[0]).attr("visibility", "visible");
 
-var si_line_2 = integral_plot.svg.append("g").attr("id", "action-line-2").attr("stroke", colors[1]).attr("visibility", "visible");
-var si_point_2 = integral_plot.svg.append("circle").attr("id", "action-point-2").attr("r", 3).attr("fill", colors[1]);
+var si_line_2 = integral_plot.svg.append("g").attr("id", "action-line-2").attr("stroke", colors[1]).attr("visibility", "hidden");
+var si_point_2 = integral_plot.svg.append("circle").attr("id", "action-point-2").attr("r", 3).attr("fill", colors[1]).attr("visibility", "hidden");
 
-var si_line_3 = integral_plot.svg.append("g").attr("id", "action-line-3").attr("stroke", colors[2]).attr("visibility", "visible");
-var si_point_3 = integral_plot.svg.append("circle").attr("id", "action-point-3").attr("r", 3).attr("fill", colors[2]);
+var si_line_3 = integral_plot.svg.append("g").attr("id", "action-line-3").attr("stroke", colors[2]).attr("visibility", "hidden");
+var si_point_3 = integral_plot.svg.append("circle").attr("id", "action-point-3").attr("r", 3).attr("fill", colors[2]).attr("visibility", "hidden");
 
-var si_line_4 = integral_plot.svg.append("g").attr("id", "action-line-4").attr("stroke", colors[3]).attr("visibility", "visible");
-var si_point_4 = integral_plot.svg.append("circle").attr("id", "action-point-4").attr("r", 3).attr("fill", colors[3]);
+var si_line_4 = integral_plot.svg.append("g").attr("id", "action-line-4").attr("stroke", colors[3]).attr("visibility", "hidden");
+var si_point_4 = integral_plot.svg.append("circle").attr("id", "action-point-4").attr("r", 3).attr("fill", colors[3]).attr("visibility", "hidden");
 
-var si_line_5 = integral_plot.svg.append("g").attr("id", "action-line-5").attr("stroke", colors[4]).attr("visibility", "visible");
-var si_point_5 = integral_plot.svg.append("circle").attr("id", "action-point-5").attr("r", 3).attr("fill", colors[4]);
+var si_line_5 = integral_plot.svg.append("g").attr("id", "action-line-5").attr("stroke", colors[4]).attr("visibility", "hidden");
+var si_point_5 = integral_plot.svg.append("circle").attr("id", "action-point-5").attr("r", 3).attr("fill", colors[4]).attr("visibility", "hidden");
 
 // integral plot + point
 var lines = [si_line_1, si_line_2, si_line_3, si_line_4, si_line_5];
@@ -463,8 +463,21 @@ document.getElementById("reset-button").onclick = function() {
       document.getElementById(`y${i}-slider`).value = vals[i];
       updateSliderInfo(i);
     }
+    plotIntegral();
+    plotIntegralPoint();
     endAnimation();
     startAnimation();
+}
+
+document.getElementById("randomize-button").onclick = function() {
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById(`y${i}-slider`).value = Math.floor(max_y*Math.random());
+    updateSliderInfo(i);
+  }
+  plotIntegral();
+  plotIntegralPoint();
+  endAnimation();
+  startAnimation();
 }
 
 function updateSliderInfo(x) {
@@ -476,7 +489,6 @@ function updateSliderInfo(x) {
     else if (x == 3) {y3_point.attr("cy", position_plot.yScale(yList[x]));}
     else if (x == 4) {y4_point.attr("cy", position_plot.yScale(yList[x]));}
     else if (x == 5) {y5_point.attr("cy", position_plot.yScale(yList[x]));}
-    document.getElementById("debug").innerHTML = parseInt(action(yList));
 }
 
 document.getElementById("y1-slider").oninput = function() {
@@ -542,5 +554,38 @@ document.getElementById("y5-slider").onchange = function() {
   updateSliderInfo(5);
   endAnimation();
   startAnimation();
+}
+
+function hide(id, point, line) {
+  let on = document.getElementById(id).value;
+  if (on == "off") {
+      document.getElementById(id).value = "on";
+      point.attr("visibility", "visible");
+      line.attr("visibility", "visible");
+  } else {
+      document.getElementById(id).value = "off";
+      point.attr("visibility", "hidden");
+      line.attr("visibility", "hidden");
+  }
+}
+
+document.getElementById("show-action-1").onchange = function() {
+  hide("show-action-1", si_point_1, si_line_1);
+}
+
+document.getElementById("show-action-2").onchange = function() {
+  hide("show-action-2", si_point_2, si_line_2);
+}
+
+document.getElementById("show-action-3").onchange = function() {
+  hide("show-action-3", si_point_3, si_line_3);
+}
+
+document.getElementById("show-action-4").onchange = function() {
+  hide("show-action-4", si_point_4, si_line_4);
+}
+
+document.getElementById("show-action-5").onchange = function() {
+  hide("show-action-5", si_point_5, si_line_5);
 }
 
