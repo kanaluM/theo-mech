@@ -3,7 +3,7 @@ body {
     top: 70px;
     background-color:#edcdca;
     max-width: 1000px;
-    /* margin: auto; */
+    margin: auto;
 }
 
 svg, canvas {
@@ -63,31 +63,12 @@ svg, canvas {
     margin: auto;
 }
 
-#applet{
+#applet {
     background-color:#b5cef5;
     position: relative;
-    height: 650px;
-    width: 1250px;
+    height: 380px;
+    width: 1050px;
     left: 0px;
-}
-
-#top-panel{
-    /* background-color: green; */
-    position: absolute;
-    height: 320px;
-    /* width: 1250px; */
-    width: 100%;
-    padding: 10px;
-}
-
-#bottom-panel{
-    /* background-color:red; */
-    position: absolute;
-    height: 320px;
-    /* width: 1250px; */
-    width: 100%;
-    bottom: 0px;
-    padding: 10px;
 }
 
 .column {
@@ -105,25 +86,7 @@ IDK what that means*/
     clear: both;
  }
 
-#projectile-motion-canvas-1 {
-    width: 190px;
-    height: 100%;
-}
-
-#projectile-motion-canvas-2 {
-    width: 315px;
-    height: 100%;
-}
-
 #controls {
-    background-color:#c2f0c8;
-    box-sizing: border-box;
-    width: 270px;
-    height: 100%;
-    padding: 10px;
-}
-
-#tform {
     background-color:#c2f0c8;
     box-sizing: border-box;
     width: 270px;
@@ -135,52 +98,4 @@ IDK what that means*/
     display: block;
     float: left;
     width: 50%;
-}
-
-#energy-graph{
-    /* background-color:red; */
-    height: 300px;
-    width: 260px;
-}
-
-#integral-graph{
-    /* background-color:green; */
-    height: 300px;
-    width: 260px;
-}
-
-#derivative-graph{
-    /* background-color:blue; */
-    height: 300px;
-    width: 260px;
-}
-
-#red {
-    color: red;
-    background-color:red;
-    width: 30px;
-}
-
-#green {
-    color: green;
-    background-color:green;
-    width: 30px;
-}
-
-#blue {
-    color: blue;
-    background-color:blue;
-    width: 30px;
-}
-
-#orange {
-    color: orange;
-    background-color:orange;
-    width: 30px;
-}
-
-#purple {
-    color: purple;
-    background-color:purple;
-    width: 30px;
 }
