@@ -7,8 +7,9 @@ const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 330;
 const SVG_HEIGHT = 280;
 const dt = 0.01;
-const FRAME_RATE = 5;   // ms
+var FRAME_RATE = 5;   // ms
 const TRANSITION_TIME = 10; // ms
+const MAX_FRAME_RATE = parseInt(document.getElementById("speed-slider").getAttribute("max"));
 
 // const G = 6.7 * 10 ** (-11);
 // const m1 = 1;  // Earth
@@ -425,4 +426,10 @@ document.getElementById("a-slider").onchange = function() {
 document.getElementById("earth-slider").onchange = function() {
   d = parseInt(document.getElementById("earth-slider").value)/100;
   runAnimation(a, d);
+}
+
+// run animation
+document.getElementById("speed-slider").oninput = function() {
+  FRAME_RATE = MAX_FRAME_RATE+1-parseInt(document.getElementById("speed-slider").value);
+  document.getElementById("print-speed").innerHTML = FRAME_RATE;
 }
